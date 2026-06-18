@@ -1,0 +1,302 @@
+@import "tailwindcss";
+
+/* ─────────────────────────────────────────────────
+   CRESCO PRIME — DESIGN SYSTEM
+   Awwward-winning dark theme foundation
+   ───────────────────────────────────────────────── */
+
+@theme {
+  /* Typography */
+  --font-display: "Cormorant Garamond", ui-serif, Georgia, serif;
+  --font-body: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "DM Sans", ui-sans-serif, system-ui, sans-serif;
+
+  /* ── Core Palette ── */
+  --color-bg-deep: #060A14;
+  --color-bg-primary: #0A0F1C;
+  --color-bg-elevated: #111827;
+  --color-bg-surface: #1A2035;
+
+  /* Brand Accents */
+  --color-emerald: #2A9D8F;
+  --color-emerald-light: #3DBFB0;
+  --color-emerald-dim: #1E7A6F;
+  --color-gold: #C9A84C;
+  --color-gold-soft: #D4C9A0;
+  --color-gold-dim: #A08B3D;
+  --color-bronze: #B08D57;
+
+  /* Text */
+  --color-text-primary: #F0EDE6;
+  --color-text-secondary: #9CA3AF;
+  --color-text-muted: #6B7280;
+  --color-text-accent: #2A9D8F;
+
+  /* Legacy (for compatibility) */
+  --color-charcoal: #F0EDE6;
+  --color-ivory: #F0EDE6;
+  --color-paper: #0A0F1C;
+  --color-mist: #111827;
+  --color-navy: #060A14;
+  --color-slate: #111827;
+  --color-growth: #2A9D8F;
+  --color-growth-light: #3DBFB0;
+  --color-muted: #6B7280;
+
+  /* Borders & Surfaces */
+  --color-border: rgba(255, 255, 255, 0.06);
+  --color-border-subtle: rgba(255, 255, 255, 0.03);
+  --color-glass: rgba(255, 255, 255, 0.03);
+  --color-glass-hover: rgba(255, 255, 255, 0.06);
+
+  /* Spacing */
+  --spacing-section: clamp(6rem, 14vw, 10rem);
+  --spacing-gutter: clamp(1.25rem, 4vw, 3rem);
+  --max-content: 82rem;
+
+  /* Transitions */
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
+  --duration-fast: 200ms;
+  --duration-normal: 400ms;
+  --duration-slow: 800ms;
+}
+
+:root {
+  --color-bg-deep: #060A14;
+  --color-bg-primary: #0A0F1C;
+  --color-bg-elevated: #111827;
+  --color-bg-surface: #1A2035;
+  --color-emerald: #2A9D8F;
+  --color-emerald-light: #3DBFB0;
+  --color-emerald-dim: #1E7A6F;
+  --color-gold: #C9A84C;
+  --color-gold-soft: #D4C9A0;
+  --color-gold-dim: #A08B3D;
+  --color-text-primary: #F0EDE6;
+  --color-text-secondary: #9CA3AF;
+  --color-text-muted: #6B7280;
+  --color-text-accent: #2A9D8F;
+  --color-border: rgba(255, 255, 255, 0.06);
+  --color-border-subtle: rgba(255, 255, 255, 0.03);
+  --color-glass: rgba(255, 255, 255, 0.03);
+  --color-glass-hover: rgba(255, 255, 255, 0.06);
+}
+
+/* ─────────────────────────────────────────────────
+   BASE STYLES
+   ───────────────────────────────────────────────── */
+
+@layer base {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: auto;
+    color-scheme: dark;
+  }
+
+  html.lenis,
+  html.lenis body {
+    height: auto;
+  }
+
+  .lenis.lenis-smooth {
+    scroll-behavior: auto !important;
+  }
+
+  body {
+    margin: 0;
+    min-height: 100vh;
+    background-color: #060A14 !important;
+    color: #F0EDE6 !important;
+    font-family: var(--font-body);
+    font-weight: 400;
+    line-height: 1.6;
+    letter-spacing: -0.01em;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+  }
+
+  ::selection {
+    background: color-mix(in srgb, var(--color-emerald) 25%, transparent);
+    color: var(--color-text-primary);
+  }
+
+  /* Scrollbar styling */
+  ::-webkit-scrollbar {
+    width: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: var(--color-bg-deep);
+  }
+  ::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 3px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.15);
+  }
+}
+
+/* ─────────────────────────────────────────────────
+   UTILITY CLASSES
+   ───────────────────────────────────────────────── */
+
+@layer utilities {
+  /* Typography */
+  .font-display {
+    font-family: var(--font-display);
+  }
+  .font-body {
+    font-family: var(--font-body);
+  }
+  .font-mono {
+    font-family: var(--font-mono);
+  }
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  /* Gradient text */
+  .text-gradient-emerald {
+    background: linear-gradient(135deg, var(--color-emerald-light), var(--color-emerald));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .text-gradient-gold {
+    background: linear-gradient(135deg, var(--color-gold), var(--color-gold-soft));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .text-gradient-premium {
+    background: linear-gradient(135deg, var(--color-text-primary) 0%, var(--color-gold-soft) 50%, var(--color-text-primary) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* Glow effects */
+  .glow-emerald {
+    box-shadow:
+      0 0 0 1px color-mix(in srgb, var(--color-emerald) 15%, transparent),
+      0 0 40px color-mix(in srgb, var(--color-emerald) 10%, transparent),
+      0 0 100px color-mix(in srgb, var(--color-emerald) 5%, transparent);
+  }
+  .glow-gold {
+    box-shadow:
+      0 0 0 1px color-mix(in srgb, var(--color-gold) 12%, transparent),
+      0 0 50px color-mix(in srgb, var(--color-gold) 8%, transparent),
+      0 0 100px color-mix(in srgb, var(--color-gold) 4%, transparent);
+  }
+  .glow-emerald-soft {
+    box-shadow: 0 0 60px color-mix(in srgb, var(--color-emerald) 8%, transparent);
+  }
+  .glow-gold-soft {
+    box-shadow: 0 0 60px color-mix(in srgb, var(--color-gold) 6%, transparent);
+  }
+
+  /* Surfaces */
+  .surface-glass {
+    background: var(--color-glass);
+    backdrop-filter: blur(24px) saturate(1.2);
+    -webkit-backdrop-filter: blur(24px) saturate(1.2);
+    border: 1px solid var(--color-border);
+  }
+  .surface-glass-hover:hover {
+    background: var(--color-glass-hover);
+  }
+  .surface-elevated {
+    background: var(--color-bg-elevated);
+    border: 1px solid var(--color-border);
+  }
+
+  /* Layout */
+  .section-padding {
+    padding-inline: var(--spacing-gutter);
+    padding-block: var(--spacing-section);
+  }
+  .container-wide {
+    width: min(100%, var(--max-content));
+    margin-inline: auto;
+    padding-inline: var(--spacing-gutter);
+  }
+
+  /* Dividers */
+  .divider-glow {
+    height: 1px;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      color-mix(in srgb, var(--color-emerald) 40%, transparent) 30%,
+      color-mix(in srgb, var(--color-gold) 30%, transparent) 60%,
+      transparent 100%
+    );
+  }
+  .divider-subtle {
+    height: 1px;
+    background: var(--color-border);
+  }
+}
+
+/* ─────────────────────────────────────────────────
+   ANIMATIONS
+   ───────────────────────────────────────────────── */
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes pulse-glow {
+  0%, 100% {
+    box-shadow: 0 0 20px color-mix(in srgb, var(--color-emerald) 15%, transparent);
+  }
+  50% {
+    box-shadow: 0 0 40px color-mix(in srgb, var(--color-emerald) 25%, transparent),
+                0 0 80px color-mix(in srgb, var(--color-emerald) 10%, transparent);
+  }
+}
+
+@keyframes scroll-indicator {
+  0% { transform: translateY(0); opacity: 1; }
+  50% { transform: translateY(8px); opacity: 0.4; }
+  100% { transform: translateY(0); opacity: 1; }
+}
+
+/* Noise overlay */
+.noise-overlay::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  pointer-events: none;
+  opacity: 0.025;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 256px 256px;
+  /* Removed grain animation for massive performance boost */
+}
+
+/* Ambient glow blobs */
+.ambient-glow {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px); /* Reduced blur for performance */
+  pointer-events: none;
+  transform: translateZ(0); /* Hardware acceleration */
+  will-change: transform;
+}
+.ambient-glow--emerald {
+  background: color-mix(in srgb, var(--color-emerald) 8%, transparent);
+}
+.ambient-glow--gold {
+  background: color-mix(in srgb, var(--color-gold) 6%, transparent);
+}
+
