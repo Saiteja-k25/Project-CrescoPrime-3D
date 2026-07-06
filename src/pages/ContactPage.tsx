@@ -57,8 +57,7 @@ export function ContactPage() {
                 <div>
                   <p className="font-mono text-[0.7rem] font-medium tracking-[0.2em] text-text-muted uppercase mb-2">Location</p>
                   <address className="text-[1.1rem] text-text-primary not-italic leading-relaxed">
-                    NK Avenue, Safari Nagar, Kondapur<br />
-                    Hyderabad, Telangana 500084
+                    Hyderabad
                   </address>
                 </div>
               </div>

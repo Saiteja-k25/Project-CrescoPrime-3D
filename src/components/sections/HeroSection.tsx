@@ -4,7 +4,7 @@ import { gsap } from "@/lib/gsap";
 import { siteConfig } from "@/config/site";
 import { HeroCanvas } from "@/components/three/HeroCanvas";
 import { CanvasErrorBoundary } from "@/components/three/CanvasErrorBoundary";
-import { SpotlightButton } from "@/components/ui/SpotlightButton";
+import { StarBorder } from "@/components/ui/StarBorder";
 
 export function HeroSection() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -122,9 +122,9 @@ export function HeroSection() {
 
         {/* CTA Buttons */}
         <div data-hero-buttons className="mt-12 lg:mt-auto flex flex-col sm:flex-row gap-6 max-w-md lg:max-w-none relative z-20">
-          <SpotlightButton as={Link} to="/careers" className="!h-14 !px-10 !text-[1.05rem] !bg-emerald border-none text-bg-deep hover:bg-emerald-light">
+          <StarBorder as={Link} to="/careers" color="#2a9d8f" className="star-border-large !rounded-xl text-text-primary font-semibold cursor-pointer">
             Start Trading
-          </SpotlightButton>
+          </StarBorder>
         </div>
       </div>
 

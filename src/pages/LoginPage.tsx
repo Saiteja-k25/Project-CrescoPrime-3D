@@ -1,99 +1,225 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
-import { SpotlightButton } from "@/components/ui/SpotlightButton";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "@/hooks/useAuth";
+import { DEPARTMENTS } from "@/config/departments";
+import { StarBorder } from "@/components/ui/StarBorder";
+import { 
+  Bitcoin, 
+  TrendingUp, 
+  Settings, 
+  Wallet, 
+  Users, 
+  Mail, 
+  Lock, 
+  Eye, 
+  EyeOff, 
+  ShieldCheck 
+} from "lucide-react";
+
+function getDeptIcon(iconName: string, className = "h-5 w-5") {
+  switch (iconName) {
+    case "Bitcoin":
+      return <Bitcoin className={className} />;
+    case "TrendingUp":
+      return <TrendingUp className={className} />;
+    case "Settings":
+      return <Settings className={className} />;
+    case "Wallet":
+      return <Wallet className={className} />;
+    case "Users":
+      return <Users className={className} />;
+    default:
+      return <Settings className={className} />;
+  }
+}
 
 export function LoginPage() {
-  const [isLogin, setIsLogin] = useState(true);
+  const { user, department, login } = useAuth();
+  const navigate = useNavigate();
+  
+  const [selectedDept, setSelectedDept] = useState("crypto");
+  const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    if (user && department) {
+      navigate(`/dashboard/${department}`);
+    }
+  }, [user, department, navigate]);
+
+  // Set email whenever selected department changes
+  const activeDept = DEPARTMENTS[selectedDept];
+  const email = activeDept ? activeDept.email : "";
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError(null);
+    setIsLoading(true);
+
+    try {
+      await login(email, password, selectedDept);
+      navigate(`/dashboard/${selectedDept}`);
+    } catch (err: any) {
+      console.error("Login failed:", err);
+      // Map standard Firebase errors to human-readable strings
+      switch (err.code) {
+        case "auth/user-not-found":
+          setError("No staff account found for this department.");
+          break;
+        case "auth/wrong-password":
+        case "auth/invalid-credential":
+          setError("Invalid password for this department desk. Please check and try again.");
+          break;
+        case "auth/too-many-requests":
+          setError("Too many failed attempts. Please try again later.");
+          break;
+        case "auth/network-request-failed":
+          setError("Network error. Please check your internet connection.");
+          break;
+        default:
+          setError("Authentication failed. Please verify credentials.");
+      }
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
-    <div className="min-h-screen flex items-center justify-center pt-20 pb-20 relative overflow-hidden">
-      {/* Background glow */}
+    <div className="min-h-screen flex items-center justify-center pt-24 pb-20 relative overflow-hidden bg-bg-deep">
+      {/* Background ambient glow */}
       <div className="absolute top-1/2 left-1/2 h-[500px] w-[500px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-emerald/5 blur-[120px] pointer-events-none" />
 
-      <div className="container-wide relative z-10 flex justify-center">
-        <div className="w-full max-w-md">
-          {/* Card */}
-          <div className="rounded-[2rem] border border-white/[0.04] bg-bg-elevated/40 p-8 md:p-10 backdrop-blur-xl shadow-2xl relative overflow-hidden">
+      <div className="container-wide relative z-10 flex justify-center w-full">
+        <div className="w-full max-w-2xl">
+          {/* Main Card */}
+          <div className="rounded-[2rem] border border-white/[0.04] bg-bg-elevated/40 p-6 md:p-10 backdrop-blur-xl shadow-2xl relative overflow-hidden">
             {/* Top accent line */}
-            <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-emerald-light via-emerald to-emerald-dim" />
+            <div className="absolute top-0 left-0 w-full h-[3px] bg-gradient-to-r from-emerald-light via-emerald to-emerald-dim" />
 
+            {/* Header */}
             <div className="text-center mb-8">
-              <h1 className="font-display text-3xl font-bold text-text-primary mb-2">
-                {isLogin ? "Welcome Back" : "Create an Account"}
+              <h1 className="font-display text-4xl font-bold text-text-primary mb-2 tracking-wide">
+                Department Portal
               </h1>
               <p className="text-text-muted text-[0.95rem]">
-                {isLogin 
-                  ? "Access your institutional trading terminal." 
-                  : "Join the most disciplined trading firm."}
+                Select a department to enter your credentials
               </p>
             </div>
 
-            {/* Google Auth Button */}
-            <button className="w-full h-12 rounded-lg border border-white/10 bg-white/5 flex items-center justify-center gap-3 text-text-primary hover:bg-white/10 transition-colors font-medium mb-6">
-              <svg viewBox="0 0 24 24" width="20" height="20" xmlns="http://www.w3.org/2000/svg">
-                <g transform="matrix(1, 0, 0, 1, 27.009001, -39.238998)">
-                  <path fill="#4285F4" d="M -3.264 51.509 C -3.264 50.719 -3.334 49.969 -3.454 49.239 L -14.754 49.239 L -14.754 53.749 L -8.284 53.749 C -8.574 55.229 -9.424 56.479 -10.684 57.329 L -10.684 60.329 L -6.824 60.329 C -4.564 58.239 -3.264 55.159 -3.264 51.509 Z"/>
-                  <path fill="#34A853" d="M -14.754 63.239 C -11.514 63.239 -8.804 62.159 -6.824 60.329 L -10.684 57.329 C -11.764 58.049 -13.134 58.489 -14.754 58.489 C -17.884 58.489 -20.534 56.379 -21.484 53.529 L -25.464 53.529 L -25.464 56.619 C -23.494 60.539 -19.444 63.239 -14.754 63.239 Z"/>
-                  <path fill="#FBBC05" d="M -21.484 53.529 C -21.734 52.809 -21.864 52.039 -21.864 51.239 C -21.864 50.439 -21.724 49.669 -21.484 48.949 L -21.484 45.859 L -25.464 45.859 C -26.284 47.479 -26.754 49.299 -26.754 51.239 C -26.754 53.179 -26.284 54.999 -25.464 56.619 L -21.484 53.529 Z"/>
-                  <path fill="#EA4335" d="M -14.754 43.989 C -12.984 43.989 -11.404 44.599 -10.154 45.789 L -6.734 42.369 C -8.804 40.429 -11.514 39.239 -14.754 39.239 C -19.444 39.239 -23.494 41.939 -25.464 45.859 L -21.484 48.949 C -20.534 46.099 -17.884 43.989 -14.754 43.989 Z"/>
-                </g>
-              </svg>
-              Continue with Google
-            </button>
-
-            <div className="flex items-center gap-4 mb-6">
-              <div className="h-px w-full bg-white/10" />
-              <span className="text-text-muted text-sm uppercase tracking-wider">or</span>
-              <div className="h-px w-full bg-white/10" />
+            {/* Department Selector Dock */}
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2.5 mb-8 p-1.5 rounded-2xl bg-black/35 border border-white/[0.04]">
+              {Object.values(DEPARTMENTS).map((dept) => {
+                const isSelected = selectedDept === dept.id;
+                return (
+                  <button
+                    key={dept.id}
+                    type="button"
+                    onClick={() => {
+                      setSelectedDept(dept.id);
+                      setPassword("");
+                      setError(null);
+                    }}
+                    className={`flex flex-col items-center justify-center py-3.5 px-2 rounded-xl transition-all duration-300 cursor-pointer ${
+                      isSelected
+                        ? "bg-emerald/10 border border-emerald/30 text-emerald shadow-[0_0_15px_rgba(42,157,143,0.15)]"
+                        : "border border-transparent text-text-muted hover:text-text-secondary hover:bg-white/[0.02]"
+                    }`}
+                  >
+                    <div className={`mb-2 transition-transform duration-300 ${isSelected ? "scale-110" : ""}`}>
+                      {getDeptIcon(dept.iconName, "h-5 w-5")}
+                    </div>
+                    <span className="text-[0.72rem] font-semibold tracking-wider uppercase">
+                      {dept.name === "HR Department" ? "HR" : dept.name}
+                    </span>
+                  </button>
+                );
+              })}
             </div>
 
             {/* Form */}
-            <form className="flex flex-col gap-4" onSubmit={(e) => e.preventDefault()}>
-              {!isLogin && (
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="flex flex-col gap-1.5">
-                    <label className="text-[0.75rem] font-medium text-text-muted uppercase tracking-wider">First Name</label>
-                    <input type="text" required className="h-12 w-full rounded-lg border border-white/10 bg-black/20 px-4 text-text-primary focus:border-emerald/50 focus:outline-none focus:ring-1 focus:ring-emerald/50" />
-                  </div>
-                  <div className="flex flex-col gap-1.5">
-                    <label className="text-[0.75rem] font-medium text-text-muted uppercase tracking-wider">Last Name</label>
-                    <input type="text" required className="h-12 w-full rounded-lg border border-white/10 bg-black/20 px-4 text-text-primary focus:border-emerald/50 focus:outline-none focus:ring-1 focus:ring-emerald/50" />
-                  </div>
+            <form className="max-w-md mx-auto flex flex-col gap-5" onSubmit={handleSubmit}>
+              <div className="text-center mb-1">
+                <span className="text-[0.8rem] font-medium text-text-muted uppercase tracking-widest">
+                  Accessing <span className="text-emerald font-semibold">{activeDept?.name}</span> Trading Desk
+                </span>
+              </div>
+
+              {/* Email Address */}
+              <div className="flex flex-col gap-1.5">
+                <label className="text-[0.75rem] font-semibold text-text-muted uppercase tracking-wider">
+                  Email Address
+                </label>
+                <div className="relative flex items-center">
+                  <Mail className="absolute left-4 h-4 w-4 text-text-muted pointer-events-none" />
+                  <input
+                    type="email"
+                    value={email}
+                    readOnly
+                    className="h-12 w-full rounded-lg border border-white/10 bg-black/30 pl-11 pr-4 text-[0.95rem] text-text-muted select-none cursor-not-allowed focus:outline-none"
+                    tabIndex={-1}
+                  />
+                </div>
+              </div>
+
+              {/* Password */}
+              <div className="flex flex-col gap-1.5">
+                <label className="text-[0.75rem] font-semibold text-text-muted uppercase tracking-wider">
+                  Password
+                </label>
+                <div className="relative flex items-center">
+                  <Lock className="absolute left-4 h-4 w-4 text-text-muted pointer-events-none" />
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    required
+                    placeholder="••••••••"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    className="h-12 w-full rounded-lg border border-white/10 bg-black/20 pl-11 pr-11 text-text-primary placeholder:text-text-muted/40 focus:border-emerald/50 focus:outline-none focus:ring-1 focus:ring-emerald/50 transition-colors"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-4 text-text-muted hover:text-text-secondary transition-colors"
+                    aria-label="Toggle password visibility"
+                  >
+                    {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                  </button>
+                </div>
+              </div>
+
+              {/* Error Message */}
+              {error && (
+                <div className="flex items-center gap-3 p-3.5 rounded-lg border border-red-500/10 bg-red-500/5 text-red-400 text-sm animate-pulse">
+                  <span className="flex-1 text-[0.85rem]">{error}</span>
                 </div>
               )}
 
-              <div className="flex flex-col gap-1.5">
-                <label className="text-[0.75rem] font-medium text-text-muted uppercase tracking-wider">Email Address</label>
-                <input type="email" required placeholder="you@example.com" className="h-12 w-full rounded-lg border border-white/10 bg-black/20 px-4 text-text-primary focus:border-emerald/50 focus:outline-none focus:ring-1 focus:ring-emerald/50" />
-              </div>
-
-              <div className="flex flex-col gap-1.5 mb-2">
-                <div className="flex justify-between items-center">
-                  <label className="text-[0.75rem] font-medium text-text-muted uppercase tracking-wider">Password</label>
-                  {isLogin && <a href="#" className="text-[0.75rem] text-emerald hover:text-emerald-light">Forgot password?</a>}
-                </div>
-                <input type="password" required placeholder="••••••••" className="h-12 w-full rounded-lg border border-white/10 bg-black/20 px-4 text-text-primary focus:border-emerald/50 focus:outline-none focus:ring-1 focus:ring-emerald/50" />
-              </div>
-
-              <SpotlightButton className="w-full !h-12 !bg-emerald border-none text-bg-deep hover:bg-emerald-light !rounded-lg mt-2">
-                {isLogin ? "Sign In" : "Create Account"}
-              </SpotlightButton>
+              {/* Submit Button */}
+              <StarBorder
+                as="button"
+                type="submit"
+                disabled={isLoading}
+                color="#2a9d8f"
+                className="w-full mt-2 disabled:opacity-50 cursor-pointer text-text-primary font-semibold"
+              >
+                {isLoading ? (
+                  <>
+                    <span className="h-4 w-4 animate-spin rounded-full border-t-2 border-r-2 border-emerald" />
+                    Authenticating...
+                  </>
+                ) : (
+                  "Sign In"
+                )}
+              </StarBorder>
             </form>
 
-            <div className="mt-6 text-center text-[0.9rem] text-text-secondary">
-              {isLogin ? "Don't have an account? " : "Already have an account? "}
-              <button 
-                onClick={() => setIsLogin(!isLogin)} 
-                className="text-emerald font-medium hover:text-emerald-light transition-colors"
-              >
-                {isLogin ? "Sign up" : "Log in"}
-              </button>
+            {/* Footer Note */}
+            <div className="mt-8 flex items-center justify-center gap-2 text-[0.72rem] text-text-muted/60 uppercase tracking-widest border-t border-white/[0.03] pt-6">
+              <ShieldCheck className="h-4 w-4 text-emerald" />
+              Secured with Firebase Authentication
             </div>
-            
-            <p className="mt-8 text-center text-[0.75rem] text-text-muted/60">
-              By continuing, you agree to Cresco Prime's <br />
-              <Link to="/terms-of-use" className="underline hover:text-text-muted">Terms of Service</Link> and <Link to="/privacy-policy" className="underline hover:text-text-muted">Privacy Policy</Link>.
-            </p>
           </div>
         </div>
       </div>

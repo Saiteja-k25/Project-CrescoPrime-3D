@@ -38,7 +38,7 @@ export function PrivacyPolicyPage() {
 
         <section>
           <h2 className="font-display text-2xl text-text-primary mb-4">Contact</h2>
-          <p>For privacy-related questions, contact Cresco Prime at <a href="mailto:hr@crescoprime.com" className="text-gold hover:underline">hr@crescoprime.com</a> or write to us at NK Avenue, Safari Nagar, Kondapur, Hyderabad 500084.</p>
+          <p>For privacy-related questions, contact Cresco Prime at <a href="mailto:hr@crescoprime.com" className="text-gold hover:underline">hr@crescoprime.com</a> or write to us at Hyderabad.</p>
         </section>
       </div>
     </main>

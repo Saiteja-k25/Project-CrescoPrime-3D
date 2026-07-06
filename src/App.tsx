@@ -16,11 +16,59 @@ import { ContactPage } from "@/pages/ContactPage";
 import { CareersPage } from "@/pages/CareersPage";
 import { PrivacyPolicyPage } from "@/pages/PrivacyPolicyPage";
 import { TermsOfUsePage } from "@/pages/TermsOfUsePage";
-// ... rest of the file ...
 import { LoginPage } from "@/pages/LoginPage";
+import { DashboardHub } from "@/pages/DashboardHub";
+import { CryptoDashboard } from "@/pages/dashboards/CryptoDashboard";
+import { CommoditiesDashboard } from "@/pages/dashboards/CommoditiesDashboard";
+import { OperationsDashboard } from "@/pages/dashboards/OperationsDashboard";
+import { AccountsDashboard } from "@/pages/dashboards/AccountsDashboard";
+import { HRDashboard } from "@/pages/dashboards/HRDashboard";
+import { ProtectedRoute } from "@/components/layout/ProtectedRoute";
+import { AuthProvider } from "@/hooks/useAuth";
 
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { ErrorBoundary } from "@/components/ui/ErrorBoundary";
+
+function AppContent() {
+  const location = useLocation();
+  const isDashboard = location.pathname.startsWith("/dashboard");
+
+  return (
+    <div className="noise-overlay">
+      <Preloader />
+      {!isDashboard && <Navbar />}
+      <ErrorBoundary>
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <main>
+                <HeroSection />
+                <PlatformSection />
+                <HowItWorksSection />
+                <CTASection />
+              </main>
+            }
+          />
+          <Route path="/about" element={<main><AboutPage /></main>} />
+          <Route path="/services" element={<main><ServicesPage /></main>} />
+          <Route path="/contact" element={<main><ContactPage /></main>} />
+          <Route path="/careers" element={<main><CareersPage /></main>} />
+          <Route path="/login" element={<main><LoginPage /></main>} />
+          <Route path="/dashboard" element={<ProtectedRoute><main><DashboardHub /></main></ProtectedRoute>} />
+          <Route path="/dashboard/crypto" element={<ProtectedRoute><main><CryptoDashboard /></main></ProtectedRoute>} />
+          <Route path="/dashboard/commodities" element={<ProtectedRoute><main><CommoditiesDashboard /></main></ProtectedRoute>} />
+          <Route path="/dashboard/operations" element={<ProtectedRoute><main><OperationsDashboard /></main></ProtectedRoute>} />
+          <Route path="/dashboard/accounts" element={<ProtectedRoute><main><AccountsDashboard /></main></ProtectedRoute>} />
+          <Route path="/dashboard/hr" element={<ProtectedRoute><main><HRDashboard /></main></ProtectedRoute>} />
+          <Route path="/privacy-policy" element={<main><PrivacyPolicyPage /></main>} />
+          <Route path="/terms-of-use" element={<main><TermsOfUsePage /></main>} />
+        </Routes>
+      </ErrorBoundary>
+      {!isDashboard && <Footer />}
+    </div>
+  );
+}
 
 export default function App() {
   useLenis();
@@ -46,34 +94,10 @@ export default function App() {
 
   return (
     <BrowserRouter>
-      <ScrollToTop />
-      <div className="noise-overlay">
-        <Preloader />
-        <Navbar />
-        <ErrorBoundary>
-          <Routes>
-            <Route
-              path="/"
-              element={
-                <main>
-                  <HeroSection />
-                  <PlatformSection />
-                  <HowItWorksSection />
-                  <CTASection />
-                </main>
-              }
-            />
-            <Route path="/about" element={<main><AboutPage /></main>} />
-            <Route path="/services" element={<main><ServicesPage /></main>} />
-            <Route path="/contact" element={<main><ContactPage /></main>} />
-            <Route path="/careers" element={<main><CareersPage /></main>} />
-            <Route path="/login" element={<main><LoginPage /></main>} />
-            <Route path="/privacy-policy" element={<main><PrivacyPolicyPage /></main>} />
-            <Route path="/terms-of-use" element={<main><TermsOfUsePage /></main>} />
-          </Routes>
-        </ErrorBoundary>
-        <Footer />
-      </div>
+      <AuthProvider>
+        <ScrollToTop />
+        <AppContent />
+      </AuthProvider>
     </BrowserRouter>
   );
 }

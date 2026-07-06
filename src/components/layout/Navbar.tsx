@@ -1,10 +1,15 @@
 import { useState, useEffect, useRef } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { navLinks, siteConfig } from "@/config/site";
 import { Logo } from "@/components/ui/Logo";
-import { SpotlightButton } from "@/components/ui/SpotlightButton";
+import { StarBorder } from "@/components/ui/StarBorder";
+import { useAuth } from "@/hooks/useAuth";
+import { ArrowLeft } from "lucide-react";
 
 export function Navbar() {
+  const { user } = useAuth();
+  const location = useLocation();
+  const isLoginPage = location.pathname === "/login";
   const [scrolled, setScrolled] = useState(false);
   const [hidden, setHidden] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -47,80 +52,97 @@ export function Navbar() {
       } ${hidden && !menuOpen ? "-translate-y-full" : "translate-y-0"}`}
     >
       <div className="container-wide flex h-[4.5rem] items-center justify-between lg:h-[5rem]">
-        {/* Logo */}
-        <Link
-          to="/"
-          className="group relative z-50 flex items-center gap-3"
-          aria-label={siteConfig.name}
-          onClick={(e) => {
-            setMenuOpen(false);
-            if (window.location.pathname === "/") {
-              e.preventDefault();
-              window.scrollTo({ top: 0, behavior: "smooth" });
-            }
-          }}
-        >
-          <Logo className="h-10 w-10 text-emerald drop-shadow-[0_0_15px_rgba(42,157,143,0.8)] transition-all duration-300 hover:drop-shadow-[0_0_25px_rgba(42,157,143,1)]" />
-          <div className="hidden flex-col sm:flex">
-            <span className="font-display text-[0.8rem] font-semibold tracking-[0.2em] text-text-primary uppercase">
-              Cresco
-            </span>
-            <span className="font-display text-[0.58rem] font-medium tracking-[0.35em] text-text-secondary uppercase">
-              Prime
-            </span>
-          </div>
-        </Link>
-
-        {/* Desktop Center */}
-        <nav className="hidden items-center gap-8 lg:flex" aria-label="Desktop">
-          {navLinks.map((link) => (
+        <div className="flex items-center gap-4 sm:gap-6">
+          {isLoginPage && (
             <Link
-              key={link.href}
-              to={link.href}
-              className="text-[0.85rem] font-medium text-text-secondary transition-colors hover:text-emerald"
-              style={{
-                color: window.location.pathname === link.href ? "var(--color-emerald)" : undefined
-              }}
+              to="/"
+              className="flex items-center gap-1.5 text-[0.8rem] font-semibold text-text-muted hover:text-emerald transition-colors z-50 cursor-pointer border-r border-white/10 pr-4 sm:pr-6"
             >
-              {link.label}
+              <ArrowLeft className="h-4 w-4" />
+              Back to Home
             </Link>
-          ))}
-        </nav>
-
-        {/* Desktop Right */}
-        <div className="hidden items-center gap-5 lg:flex">
-          <SpotlightButton as={Link} to="/login" className="!h-10 !px-6 !text-[0.85rem] !bg-emerald border-none text-bg-deep hover:bg-emerald-light">
-            Login / Sign up
-          </SpotlightButton>
+          )}
+          {/* Logo */}
+          <Link
+            to="/"
+            className="group relative z-50 flex items-center gap-3"
+            aria-label={siteConfig.name}
+            onClick={(e) => {
+              setMenuOpen(false);
+              if (window.location.pathname === "/") {
+                e.preventDefault();
+                window.scrollTo({ top: 0, behavior: "smooth" });
+              }
+            }}
+          >
+            <Logo className="h-10 w-10 text-emerald drop-shadow-[0_0_15px_rgba(42,157,143,0.8)] transition-all duration-300 hover:drop-shadow-[0_0_25px_rgba(42,157,143,1)]" />
+            <div className="hidden flex-col sm:flex">
+              <span className="font-display text-[0.8rem] font-semibold tracking-[0.2em] text-text-primary uppercase">
+                Cresco
+              </span>
+              <span className="font-display text-[0.58rem] font-medium tracking-[0.35em] text-text-secondary uppercase">
+                Prime
+              </span>
+            </div>
+          </Link>
         </div>
 
+        {/* Desktop Center */}
+        {!isLoginPage && (
+          <nav className="hidden items-center gap-8 lg:flex" aria-label="Desktop">
+            {navLinks.map((link) => (
+              <Link
+                key={link.href}
+                to={link.href}
+                className="text-[0.85rem] font-medium text-text-secondary transition-colors hover:text-emerald"
+                style={{
+                  color: window.location.pathname === link.href ? "var(--color-emerald)" : undefined
+                }}
+              >
+                {link.label}
+              </Link>
+            ))}
+          </nav>
+        )}
+
+        {/* Desktop Right */}
+        {!isLoginPage && (
+          <div className="hidden items-center gap-5 lg:flex">
+            <StarBorder as={Link} to={user ? "/dashboard" : "/login"} color="#2a9d8f" className="star-border-medium !rounded-xl text-text-primary cursor-pointer">
+              {user ? "Dashboard" : "Login / Sign up"}
+            </StarBorder>
+          </div>
+        )}
+
         {/* Mobile Menu Button (Hamburger) */}
-        <button
-          type="button"
-          className="relative z-[110] flex h-11 w-11 items-center justify-center rounded-full border border-white/[0.06] bg-white/[0.03] backdrop-blur-xl lg:hidden"
-          aria-expanded={menuOpen}
-          aria-label={menuOpen ? "Close menu" : "Open menu"}
-          onClick={() => setMenuOpen((open) => !open)}
-        >
-          <span className="sr-only">Menu</span>
-          <span className="flex flex-col gap-[5px]">
-            <span
-              className={`block h-[1.5px] w-5 bg-text-primary transition-all duration-300 ${
-                menuOpen ? "translate-y-[6.5px] rotate-45" : ""
-              }`}
-            />
-            <span
-              className={`block h-[1.5px] w-5 bg-text-primary transition-all duration-300 ${
-                menuOpen ? "opacity-0" : ""
-              }`}
-            />
-            <span
-              className={`block h-[1.5px] w-5 bg-text-primary transition-all duration-300 ${
-                menuOpen ? "-translate-y-[6.5px] -rotate-45" : ""
-              }`}
-            />
-          </span>
-        </button>
+        {!isLoginPage && (
+          <button
+            type="button"
+            className="relative z-[110] flex h-11 w-11 items-center justify-center rounded-full border border-white/[0.06] bg-white/[0.03] backdrop-blur-xl lg:hidden"
+            aria-expanded={menuOpen}
+            aria-label={menuOpen ? "Close menu" : "Open menu"}
+            onClick={() => setMenuOpen((open) => !open)}
+          >
+            <span className="sr-only">Menu</span>
+            <span className="flex flex-col gap-[5px]">
+              <span
+                className={`block h-[1.5px] w-5 bg-text-primary transition-all duration-300 ${
+                  menuOpen ? "translate-y-[6.5px] rotate-45" : ""
+                }`}
+              />
+              <span
+                className={`block h-[1.5px] w-5 bg-text-primary transition-all duration-300 ${
+                  menuOpen ? "opacity-0" : ""
+                }`}
+              />
+              <span
+                className={`block h-[1.5px] w-5 bg-text-primary transition-all duration-300 ${
+                  menuOpen ? "-translate-y-[6.5px] -rotate-45" : ""
+                }`}
+              />
+            </span>
+          </button>
+        )}
       </div>
     </header>
 
@@ -165,9 +187,9 @@ export function Navbar() {
             transitionDelay: menuOpen ? `${100 + navLinks.length * 50}ms` : "0ms",
           }}
         >
-          <SpotlightButton as={Link} to="/login" onClick={() => setMenuOpen(false)} className="w-full !h-14 !text-lg !bg-emerald border-none text-bg-deep">
-            Login / Sign up
-          </SpotlightButton>
+          <StarBorder as={Link} to={user ? "/dashboard" : "/login"} onClick={() => setMenuOpen(false)} color="#2a9d8f" className="w-full star-border-large !rounded-xl text-text-primary cursor-pointer">
+            {user ? "Dashboard" : "Login / Sign up"}
+          </StarBorder>
         </div>
       </nav>
     </div>

@@ -1,4 +1,4 @@
-
+import { ElectricBorder } from "@/components/ui/ElectricBorder";
 
 export function AboutPage() {
   return (
@@ -7,7 +7,7 @@ export function AboutPage() {
         
         {/* Intro */}
         <div className="max-w-4xl mx-auto text-center">
-          <p className="font-mono text-[0.7rem] font-medium tracking-[0.3em] text-gold uppercase mb-6">
+          <p className="font-mono text-[0.7rem] font-medium tracking-[0.35em] text-gold uppercase mb-6">
             About Cresco Prime
           </p>
           <h1 className="font-display text-[clamp(2.5rem,5vw,4.5rem)] leading-[1.1] font-semibold text-text-primary mb-8">
@@ -53,8 +53,11 @@ export function AboutPage() {
 
           <div className="grid md:grid-cols-2 gap-8">
             {/* Team Member 1 */}
-            <div className="group relative overflow-hidden rounded-[2rem] border border-white/[0.04] bg-bg-elevated/20 p-10 text-center transition-all duration-500 hover:border-gold/30 hover:bg-bg-elevated/40">
-              <div className="absolute inset-0 bg-gradient-to-br from-gold/5 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+            <ElectricBorder
+              color="#d4af37"
+              borderRadius={32}
+              className="group relative overflow-hidden bg-[#0A0F1C]/40 p-10 text-center transition-all duration-500 hover:bg-[#0A0F1C]/75 cursor-default flex flex-col items-center justify-center w-full"
+            >
               <div className="relative z-10 flex flex-col items-center">
                 <div className="mb-6 flex h-24 w-24 items-center justify-center rounded-full bg-gradient-to-br from-gold to-gold-dark shadow-[0_0_30px_rgba(212,175,106,0.2)]">
                   <span className="font-display text-2xl font-bold text-bg-deep">KB</span>
@@ -66,11 +69,14 @@ export function AboutPage() {
                   <p>Hyderabad, Telangana</p>
                 </div>
               </div>
-            </div>
+            </ElectricBorder>
 
             {/* Team Member 2 */}
-            <div className="group relative overflow-hidden rounded-[2rem] border border-white/[0.04] bg-bg-elevated/20 p-10 text-center transition-all duration-500 hover:border-gold/30 hover:bg-bg-elevated/40">
-              <div className="absolute inset-0 bg-gradient-to-br from-gold/5 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+            <ElectricBorder
+              color="#d4af37"
+              borderRadius={32}
+              className="group relative overflow-hidden bg-[#0A0F1C]/40 p-10 text-center transition-all duration-500 hover:bg-[#0A0F1C]/75 cursor-default flex flex-col items-center justify-center w-full"
+            >
               <div className="relative z-10 flex flex-col items-center">
                 <div className="mb-6 flex h-24 w-24 items-center justify-center rounded-full bg-gradient-to-br from-gold to-gold-dark opacity-80 shadow-[0_0_30px_rgba(212,175,106,0.15)]">
                   <span className="font-display text-2xl font-bold text-bg-deep">VC</span>
@@ -82,7 +88,7 @@ export function AboutPage() {
                   <p>Hyderabad, Telangana</p>
                 </div>
               </div>
-            </div>
+            </ElectricBorder>
           </div>
         </div>
 
