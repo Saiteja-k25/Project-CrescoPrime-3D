@@ -64,12 +64,12 @@ cp .env.example .env
 ```
 Fill in your Firebase client config parameters:
 ```env
-VITE_FIREBASE_API_KEY=AIzaSyDd6Xjz-TSv...
+VITE_FIREBASE_API_KEY=AIza...
 VITE_FIREBASE_AUTH_DOMAIN=crescoprime-portal.firebaseapp.com
 VITE_FIREBASE_PROJECT_ID=crescoprime-portal
-VITE_FIREBASE_STORAGE_BUCKET=crescoprime-portal.firebasestorage.app
-VITE_FIREBASE_MESSAGING_SENDER_ID=533803169754
-VITE_FIREBASE_APP_ID=1:533803169754:web:260beef043fa0f...
+VITE_FIREBASE_STORAGE_BUCKET=crescoprimexxxxxxxxxfirebase.app
+VITE_FIREBASE_MESSAGING_SENDER_ID=533xxxxxx
+VITE_FIREBASE_APP_ID=1:533803169754:web:260bee...
 ```
 
 ### 2. Local Development
