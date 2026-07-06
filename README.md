@@ -32,11 +32,11 @@ Trading desks are configured via Firebase Authentication. Depending on the desk 
 
 | Trading Desk | Email Address | Password |
 | :--- | :--- | :--- |
-| **Accounts** | `accounts@crescoprime.com` | `Matrix@2027` |
-| **Crypto** | `hr@crescoprime.com` | `Matrix@2030` |
-| **HR Department** | `hr@crescoprime.com` | `Matrix@2026` |
-| **Operations** | `hr@crescoprime.com` | `Matrix@2028` |
-| **Commodities** | `hr@crescoprime.com` | `Matrix@2029` |
+| **Accounts** | `accounts@crescoprime.com` | `Mxxxxx@xxxx` |
+| **Crypto** | `hr@crescoprime.com` | `Maxxxx@xxxx` |
+| **HR Department** | `hr@crescoprime.com` | `Mxxxxx@xxxx` |
+| **Operations** | `hr@crescoprime.com` | `Mxxxxx@xxxx` |
+| **Commodities** | `hr@crescoprime.com` | `Mxxxxx@xxxx` |
 
 ---
 
@@ -119,3 +119,5 @@ This configuration ensures that reloading dashboard paths (e.g. crescoprime.com/
 
 © 2026 Cresco Prime. All rights reserved. 
 Proprietary trading software and interfaces are not open-source unless explicitly stated.
+
+Built by Kurapati Saiteja
